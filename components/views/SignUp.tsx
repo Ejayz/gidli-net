@@ -19,7 +19,7 @@ export default function SignUp() {
   return (
     <Formik
       initialValues={{ email: "", password: "", confirmPassword: "" }}
-      onSubmit={async (values) => {
+      onSubmit={async (values, actions) => {
         let headersList = {
           Accept: "*/*",
           "User-Agent": "Thunder Client (https://www.thunderclient.com)",
@@ -39,6 +39,7 @@ export default function SignUp() {
           toast.success(
             "Account created successfully. Free 5 hours of usage from us! 😊"
           );
+          actions.resetForm();
         } else {
           toast.error(data);
         }
@@ -47,41 +48,44 @@ export default function SignUp() {
       validateOnChange={true}
       className="flex gap-4 flex-wrap justify-center sm:justify-start"
     >
-      {({ touched, errors, values, handleChange, handleSubmit }) => (
-        <Form className="flex gap-4 flex-wrap justify-center sm:justify-start">
-          <EmailInput
-            values={values.email}
-            label="Email"
-            name="email"
-            placeholder="Email"
-            errors={errors.email}
-            touched={touched.email}
-            handleChange={handleChange}
-            type="email"
-          />
-          <PasswordInput
-            values={values.password}
-            label="Password"
-            name="password"
-            placeholder="Password"
-            errors={errors.password}
-            touched={touched.password}
-            handleChange={handleChange}
-          />
-          <PasswordInput
-            values={values.confirmPassword}
-            label="Confirm Password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            errors={errors.confirmPassword}
-            touched={touched.confirmPassword}
-            handleChange={handleChange}
-          />
+      {({ touched, errors, values, handleChange, handleSubmit, resetForm }) => (
+        <>
           <ToastContainer />
-          <button type="submit" className="btn btn-primary w-full">
-            Sign Up
-          </button>
-        </Form>
+          <Form className="flex gap-4 flex-wrap justify-center sm:justify-center">
+            <EmailInput
+              values={values.email}
+              label="Email"
+              name="email"
+              placeholder="Email"
+              errors={errors.email}
+              touched={touched.email}
+              handleChange={handleChange}
+              type="email"
+            />
+            <PasswordInput
+              values={values.password}
+              label="Password"
+              name="password"
+              placeholder="Password"
+              errors={errors.password}
+              touched={touched.password}
+              handleChange={handleChange}
+            />
+            <PasswordInput
+              values={values.confirmPassword}
+              label="Confirm Password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              errors={errors.confirmPassword}
+              touched={touched.confirmPassword}
+              handleChange={handleChange}
+            />
+
+            <button type="submit" className="btn btn-primary w-full">
+              Sign Up
+            </button>
+          </Form>
+        </>
       )}
     </Formik>
   );
