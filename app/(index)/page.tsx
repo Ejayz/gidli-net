@@ -23,7 +23,7 @@ export default function Home() {
         <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
           <a
             className="rounded-md bg-black px-4 py-2 text-white hover:bg-zinc-800"
-            href=""
+            href="/login"
           >
             Manage Account
           </a>

@@ -25,8 +25,13 @@ export async function middleware(request: NextRequest) {
     }
   }
   if (
-    (request.nextUrl.pathname.startsWith("/api") &&
-      !request.nextUrl.pathname.startsWith("/api/new_customer")) ||
+    request.nextUrl.pathname == "/api/new_customer" ||
+    request.nextUrl.pathname == "/api/login"
+  ) {
+    return NextResponse.next();
+  }
+  if (
+    request.nextUrl.pathname.startsWith("/api") ||
     request.nextUrl.pathname.startsWith("/dashboard")
   ) {
     if (request.cookies.get("token")?.value) {

@@ -1,3 +1,4 @@
+import Login from "@/components/views/Login";
 import SignUp from "@/components/views/SignUp";
 import { Form, Formik } from "formik";
 import Image from "next/image";
@@ -11,15 +12,15 @@ export default function Home() {
         </h1>
 
         <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
-          Create an account to get started.
+          Login to reload and manage your account.
         </div>
-        <SignUp />
+        <Login />
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
+          href="/signup"
+          target="_self"
           rel="noopener noreferrer"
         >
           <Image
@@ -29,7 +30,7 @@ export default function Home() {
             width={16}
             height={16}
           />
-          Learn
+          Create Account
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
@@ -44,7 +45,7 @@ export default function Home() {
             width={16}
             height={16}
           />
-          Examples
+          Connect to Internet
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"

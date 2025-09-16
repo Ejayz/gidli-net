@@ -29,12 +29,12 @@ export default function Home() {
             width={16}
             height={16}
           />
-         Connect to Internet
+          Connect to Internet
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
+          href="/login"
+          target="_self"
           rel="noopener noreferrer"
         >
           <Image
@@ -44,8 +44,7 @@ export default function Home() {
             width={16}
             height={16}
           />
-        
-        Manage Account
+          Manage Account
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
