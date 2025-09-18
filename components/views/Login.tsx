@@ -22,7 +22,7 @@ export default function Login() {
           "User-Agent": "Thunder Client (https://www.thunderclient.com)",
         };
 
-        let response = await fetch("http://localhost:3000/api/login", {
+        let response = await fetch("/api/login", {
           method: "POST",
           headers: headersList,
           body: JSON.stringify({
