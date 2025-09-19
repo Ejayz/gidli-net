@@ -6,12 +6,10 @@ const Pool = require("pg-pool");
 
 
 
-console.log(process.env.USERNAME);
-
 const pool2 = new Pool({
   host: process.env.HOST,
   database: process.env.DB_NAME,
-  user: process.env.USER,
+  user: process.env.DB_USER,
   password: process.env.PASS,
   port: process.env.DB_PORT,
   ssl: false,
