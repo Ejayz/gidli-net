@@ -14,7 +14,7 @@ export default function Home() {
         </p>
         <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
           <a
-            className="rounded-md bg-black px-4 py-2 text-white hover:bg-zinc-800"
+            className="rounded-md bg-sky-950 px-4 py-2 text-white hover:bg-zinc-800"
             href="/signup"
           >
             Get Started
@@ -22,7 +22,7 @@ export default function Home() {
         </div>
         <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
           <a
-            className="rounded-md bg-black px-4 py-2 text-white hover:bg-zinc-800"
+            className="rounded-md bg-sky-950 px-4 py-2 text-white hover:bg-zinc-800"
             href="/login"
           >
             Manage Account
