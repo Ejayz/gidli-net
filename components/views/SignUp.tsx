@@ -26,7 +26,7 @@ export default function SignUp() {
           "User-Agent": "Thunder Client (https://www.thunderclient.com)",
         };
 
-        let response = await fetch("http://localhost:3000/api/new_customer", {
+        let response = await fetch("/api/new_customer", {
           method: "POST",
           headers: headersList,
           body: JSON.stringify({
