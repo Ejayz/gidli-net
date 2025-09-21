@@ -27,6 +27,7 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname == "/disconnect") {
     const IP =
       request.headers.get("x-forwarded-for")?.split("::ffff:")[1] || "";
+      console.log(IP)
     if (IP != routerIP) {
       return NextResponse.json(
         { message: "Unauthorized Access", code: 403 },
