@@ -39,7 +39,7 @@ export async function POST(request: Request) {
       query.rows[0].shadow_account_password,
       requestorIP
     );
-
+    
     if (!loginHotspot) {
       return NextResponse.json({
         message: "Error authenticating to server,Please contact operator !",
@@ -124,7 +124,6 @@ const createCustomer = async (
     name: email,
     password: password,
     "limit-uptime": limit_uptime,
-    uptime: uptime,
     comment: JSON.stringify({
       created_at: new Date().toISOString(),
     }),
@@ -139,3 +138,5 @@ const createCustomer = async (
   let data = await response.json();
   return data;
 };
+
+
