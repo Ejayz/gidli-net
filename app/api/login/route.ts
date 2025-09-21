@@ -34,7 +34,7 @@ export async function POST(request: Request) {
 
     if (!loginHotspot) {
       return NextResponse.json({
-        message: "Error authenticating to hotspot,Please contact operator !",
+        message: "Error authenticating to server,Please contact operator !",
         code: 500,
       });
     }
@@ -48,7 +48,8 @@ export async function POST(request: Request) {
     );
 
     const response = NextResponse.json({
-      message: "Login successful",
+      message:
+        "Login successful. You may now close this window and start browsing !",
       code: 200,
     });
     response.cookies.set("token", createToken, {
@@ -64,7 +65,7 @@ export async function POST(request: Request) {
     });
   }
 }
- const AuthenticateHotspot = async (
+const AuthenticateHotspot = async (
   shadow_account_name: string | Text,
   shadow_account_password: string | Text,
   ip: string | Text
