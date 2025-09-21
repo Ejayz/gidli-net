@@ -64,8 +64,7 @@ export async function POST(request: Request) {
     });
   }
 }
-
-export const AuthenticateHotspot = async (
+ const AuthenticateHotspot = async (
   shadow_account_name: string | Text,
   shadow_account_password: string | Text,
   ip: string | Text
