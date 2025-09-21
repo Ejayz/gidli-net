@@ -41,7 +41,6 @@ export async function POST(request: Request) {
     }
     await pool.query("COMMIT");
     pool.release();
-    return Response.json("User disconnected successfully", { status: 200 });
   } catch (err) {
     await pool.query("ROLLBACK");
     pool.release();
@@ -118,5 +117,7 @@ const removeUser = async (shadow_account_name: Text | String) => {
   );
 
   let data = await response.json();
+
+  console.log(data);
   return data;
 };
