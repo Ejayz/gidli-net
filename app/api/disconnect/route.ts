@@ -1,6 +1,6 @@
 import { pool2 } from "@/libs/db";
 
-export default async function POST(request: Request) {
+export async function POST(request: Request) {
   const pool = await pool2.connect();
 
   const { shadow_account_name } = await request.json();
@@ -28,6 +28,20 @@ export default async function POST(request: Request) {
         shadow_account_name,
       ]
     );
+    const remove = await removeUser(shadow_account_name);
+    if (!remove) {
+      await pool.query("ROLLBACK");
+      pool.release();
+      return Response.json(
+        `Error Disconnecting account. Please try again later.`,
+        {
+          status: 500,
+        }
+      );
+    }
+    await pool.query("COMMIT");
+    pool.release();
+    return Response.json("User disconnected successfully", { status: 200 });
   } catch (err) {
     await pool.query("ROLLBACK");
     pool.release();
