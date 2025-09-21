@@ -32,14 +32,8 @@ export async function POST(request: Request) {
       query.rows[0].limit_uptime,
       query.rows[0].uptime
     );
-
-    if (createAcc.error || createAcc.detail) {
-      return NextResponse.json({
-        message: "Error creating account on server,Please contact operator !",
-        code: 500,
-      });
-    }
-
+    console.log(createAcc);
+   
     const loginHotspot = await AuthenticateHotspot(
       query.rows[0].shadow_account_name,
       query.rows[0].shadow_account_password,
