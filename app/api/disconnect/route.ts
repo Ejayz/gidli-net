@@ -4,7 +4,7 @@ export async function POST(request: Request) {
   const pool = await pool2.connect();
 
   const { shadow_account_name } = await request.json();
-
+    console.log(shadow_account_name)
   try {
     await pool.query("BEGIN");
     const hotspot_detail = await disconnectCustomer(shadow_account_name);
