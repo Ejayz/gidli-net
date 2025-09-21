@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     }
 
     const updateUser = await pool.query(
-      "UPDATE tbl_user SET uptime_limit=$1 ,limit=$2 ,router_id=$3 WHERE shadow_account_name=$4 RETURNING id",
+      "UPDATE tbl_user SET uptime_limit=$1 ,limit=$2 ,router_id=$3 WHERE shadow_account_name=$4 and is_exist=true RETURNING id",
       [
         hotspot_detail["limit-uptime"],
         hotspot_detail["uptime"],
@@ -28,20 +28,25 @@ export async function POST(request: Request) {
         shadow_account_name,
       ]
     );
-    const remove = await removeUser(shadow_account_name);
-    if (!remove) {
-      await pool.query("ROLLBACK");
-      pool.release();
-      return Response.json(
-        `Error Disconnecting account. Please try again later.`,
-        {
-          status: 500,
+
+
+   if (updateUser.rowCount > 0) {
+        const remove = await removeUser(shadow_account_name);
+        if(!remove){
+            await pool.query("ROLLBACK");
+            pool.release();
+            return Response.json(
+                `Error Disconnecting account. Please try again later.`,
+                {
+                    status: 500,
+                }
+            );
         }
-      );
-    }
-    await pool.query("COMMIT");
-    pool.release();
+        await pool.query("COMMIT");
+        pool.release();
+   }
   } catch (err) {
+    console.log(err);
     await pool.query("ROLLBACK");
     pool.release();
     return Response.json(
@@ -116,8 +121,7 @@ const removeUser = async (shadow_account_name: Text | String) => {
     }
   );
 
-  let data = await response.json();
-
+  let data = await response.status
   console.log(data);
   return data;
 };
