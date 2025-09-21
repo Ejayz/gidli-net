@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
   }
-  if (request.nextUrl.pathname == "/disconnect") {
+  if (request.nextUrl.pathname == "/api/disconnect") {
     const IP =
       request.headers.get("x-forwarded-for")?.split("::ffff:")[1] || "";
       console.log(IP)
