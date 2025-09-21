@@ -9,7 +9,8 @@ export async function POST(request: Request) {
     await pool.query("BEGIN");
     const hotspot_detail = await disconnectCustomer(shadow_account_name);
     const routerId = await getRouterId();
-
+    console.log(routerId)
+    console.log(hotspot_detail)
     if (!hotspot_detail) {
       return Response.json(
         `Error Disconnecting account. Please try again later.`,
@@ -19,22 +20,24 @@ export async function POST(request: Request) {
       );
     }
 
+
     const updateUser = await pool.query(
       "UPDATE tbl_user SET uptime_limit=$1 ,limit=$2 ,router_id=$3 WHERE shadow_account_name=$4 and is_exist=true RETURNING id",
       [
-        hotspot_detail["limit-uptime"],
-        hotspot_detail["uptime"],
+        hotspot_detail[0]["limit-uptime"],
+        hotspot_detail[0]["uptime"],
         routerId,
         shadow_account_name,
       ]
     );
-
+    console.log(updateUser);
 
    if (updateUser.rowCount > 0) {
         const remove = await removeUser(shadow_account_name);
         if(!remove){
             await pool.query("ROLLBACK");
             pool.release();
+            console.log("Error removing user from router")
             return Response.json(
                 `Error Disconnecting account. Please try again later.`,
                 {
