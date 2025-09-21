@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 
 
     const updateUser = await pool.query(
-      "UPDATE tbl_user SET uptime_limit=$1 ,limit=$2 ,router_id=$3 WHERE shadow_account_name=$4 and is_exist=true RETURNING id",
+      "UPDATE tbl_user SET uptime_limit=$1,uptime=$2 ,router_id=$3 WHERE shadow_account_name=$4 and is_exist=true RETURNING id",
       [
         hotspot_detail[0]["limit-uptime"],
         hotspot_detail[0]["uptime"],
