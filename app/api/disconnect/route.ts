@@ -4,13 +4,12 @@ export async function POST(request: Request) {
   const pool = await pool2.connect();
 
   const { shadow_account_name } = await request.json();
-    console.log(shadow_account_name)
+
   try {
     await pool.query("BEGIN");
     const hotspot_detail = await disconnectCustomer(shadow_account_name);
     const routerId = await getRouterId();
-    console.log(routerId)
-    console.log(hotspot_detail)
+
     if (!hotspot_detail) {
       return Response.json(
         `Error Disconnecting account. Please try again later.`,
@@ -19,7 +18,6 @@ export async function POST(request: Request) {
         }
       );
     }
-
 
     const updateUser = await pool.query(
       "UPDATE tbl_user SET uptime_limit=$1,uptime=$2 ,router_id=$3 WHERE shadow_account_name=$4 and is_exist=true RETURNING id",
@@ -30,26 +28,24 @@ export async function POST(request: Request) {
         shadow_account_name,
       ]
     );
-    console.log(updateUser);
 
-   if (updateUser.rowCount > 0) {
-        const remove = await removeUser(shadow_account_name);
-        if(!remove){
-            await pool.query("ROLLBACK");
-            pool.release();
-            console.log("Error removing user from router")
-            return Response.json(
-                `Error Disconnecting account. Please try again later.`,
-                {
-                    status: 500,
-                }
-            );
-        }
-        await pool.query("COMMIT");
+    if (updateUser.rowCount > 0) {
+      const remove = await removeUser(shadow_account_name);
+      if (!remove) {
+        await pool.query("ROLLBACK");
         pool.release();
-   }
+
+        return Response.json(
+          `Error Disconnecting account. Please try again later.`,
+          {
+            status: 500,
+          }
+        );
+      }
+      await pool.query("COMMIT");
+      pool.release();
+    }
   } catch (err) {
-    console.log(err);
     await pool.query("ROLLBACK");
     pool.release();
     return Response.json(
@@ -81,7 +77,7 @@ const disconnectCustomer = async (shadow_account_name: Text | String) => {
   });
 
   let data = await response.json();
-  console.log(data);
+
   if (data.length > 0) {
     return data;
   } else {
@@ -105,7 +101,7 @@ const getRouterId = async () => {
   );
 
   let data = await response.json();
-  console.log(data);
+
   return data[0]["serial-number"];
 };
 
@@ -124,7 +120,7 @@ const removeUser = async (shadow_account_name: Text | String) => {
     }
   );
 
-  let data = await response.status
-  console.log(data);
+  let data = await response.status;
+
   return data;
 };

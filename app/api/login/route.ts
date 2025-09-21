@@ -12,11 +12,11 @@ export async function POST(request: Request) {
   const { email, password } = await request.json();
   const requestorIP: string =
     request.headers.get("x-forwarded-for")?.split("::ffff:")[1] || "";
-  console.log("Requestor IP:", requestorIP);
+
   const pool = await pool2.connect();
 
   const query = await pool.query(
-    "SELECT password,shadow_account_name,shadow_account_password FROM tbl_user where email = $1 and is_exist=true",
+    "SELECT password,shadow_account_name,shadow_account_password,limit_uptime,uptime FROM tbl_user where email = $1 and is_exist=true",
     [email]
   );
 
@@ -26,6 +26,20 @@ export async function POST(request: Request) {
   );
 
   if (validateAccount) {
+    const createAcc = await createCustomer(
+      query.rows[0].shadow_account_name,
+      query.rows[0].shadow_account_password,
+      query.rows[0].limit_uptime,
+      query.rows[0].uptime
+    );
+
+    if (createAcc.error || createAcc.detail) {
+      return NextResponse.json({
+        message: "Error creating account on server,Please contact operator !",
+        code: 500,
+      });
+    }
+
     const loginHotspot = await AuthenticateHotspot(
       query.rows[0].shadow_account_name,
       query.rows[0].shadow_account_password,
@@ -98,4 +112,36 @@ const AuthenticateHotspot = async (
     console.log(error);
     return false;
   }
+};
+
+const createCustomer = async (
+  email: Text | String,
+  password: Text | String,
+  limit_uptime: Text | String = "05:00:00",
+  uptime: Text | String = "00:00:00"
+) => {
+  let headersList = {
+    Accept: "*/*",
+    "Content-Type": "application/json",
+    Authorization: "Basic YWRtaW46cmFuZG9tRGRvczEuY29t",
+  };
+
+  let bodyContent = JSON.stringify({
+    name: email,
+    password: password,
+    "limit-uptime": limit_uptime,
+    uptime: uptime,
+    comment: JSON.stringify({
+      created_at: new Date().toISOString(),
+    }),
+  });
+
+  let response = await fetch("http://172.20.1.254/rest/ip/hotspot/user/add", {
+    method: "POST",
+    body: bodyContent,
+    headers: headersList,
+  });
+
+  let data = await response.json();
+  return data;
 };
