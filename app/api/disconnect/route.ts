@@ -74,6 +74,7 @@ const disconnectCustomer = async (shadow_account_name: Text | String) => {
   });
 
   let data = await response.json();
+  console.log(data);
   if (data.length > 0) {
     return data;
   } else {
@@ -97,7 +98,7 @@ const getRouterId = async () => {
   );
 
   let data = await response.json();
-
+  console.log(data);
   return data[0]["serial-number"];
 };
 
@@ -109,7 +110,7 @@ const removeUser = async (shadow_account_name: Text | String) => {
   };
 
   let response = await fetch(
-    "http://172.20.1.254/rest/ip/hotspot/user/ajdapulangprovido@gmail.com",
+    `http://172.20.1.254/rest/ip/hotspot/user/${shadow_account_name}`,
     {
       method: "DELETE",
       headers: headersList,
