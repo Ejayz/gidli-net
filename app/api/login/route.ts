@@ -16,7 +16,7 @@ export async function POST(request: Request) {
   const pool = await pool2.connect();
 
   const query = await pool.query(
-    "SELECT password,shadow_account_name,shadow_account_password,limit_uptime,uptime FROM tbl_user where email = $1 and is_exist=true",
+    "SELECT password,shadow_account_name,shadow_account_password,uptime_limit,uptime FROM tbl_user where email = $1 and is_exist=true",
     [email]
   );
 
